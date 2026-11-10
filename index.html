@@ -25,7 +25,7 @@
      (p.get('error') + ' ' + (p.get('error_description')||'')).replace(/[<>&]/g,'') + '</p>';
  } else if (p.get('code')) {
    const line = 'code=' + p.get('code') + ' state=' + (p.get('state')||'');
-   out.innerHTML = '<p>Skopiuj poniższą linię i wklej ją do pliku <b>~/.olx-code</b> na VM Hermes-Agent:</p>' +
+   out.innerHTML = '<p>Skopiuj poniższą linię</b> </p>' +
      '<code id="c"></code><button id="b">Kopiuj</button>' +
      '<p>Kod jest jednorazowy, ważny kilka minut i bez client_secret jest bezużyteczny.</p>';
    document.getElementById('c').textContent = line;
