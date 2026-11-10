@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex,nofollow">
+<title>OLX callback</title>
+<style>
+ body{font-family:system-ui,sans-serif;max-width:640px;margin:40px auto;padding:0 16px;color:#222}
+ code{display:block;background:#f2f2f2;padding:12px;word-break:break-all;font-size:15px;margin:8px 0}
+ button{padding:10px 16px;font-size:15px;cursor:pointer}
+ .err{color:#b00}
+</style>
+</head>
+<body>
+<h1>Autoryzacja OLX</h1>
+<div id="out">Brak danych.</div>
+<script>
+ // Strona niczego nie wysyła: tylko pokazuje kod z adresu, żeby go skopiować.
+ const p = new URLSearchParams(location.search);
+ const out = document.getElementById('out');
+ if (p.get('error')) {
+   out.innerHTML = '<p class="err">OLX zwrócił błąd: ' +
+     (p.get('error') + ' ' + (p.get('error_description')||'')).replace(/[<>&]/g,'') + '</p>';
+ } else if (p.get('code')) {
+   const line = 'code=' + p.get('code') + ' state=' + (p.get('state')||'');
+   out.innerHTML = '<p>Skopiuj poniższą linię i wklej ją do pliku <b>~/.olx-code</b> na VM Hermes-Agent:</p>' +
+     '<code id="c"></code><button id="b">Kopiuj</button>' +
+     '<p>Kod jest jednorazowy, ważny kilka minut i bez client_secret jest bezużyteczny.</p>';
+   document.getElementById('c').textContent = line;
+   document.getElementById('b').onclick = () => navigator.clipboard.writeText(line)
+     .then(() => document.getElementById('b').textContent = 'Skopiowano');
+   history.replaceState(null, '', location.pathname);   // usuń kod z paska adresu
+ }
+</script>
+</body>
+</html>
